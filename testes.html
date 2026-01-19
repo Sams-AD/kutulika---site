@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Kutulika - kutulikaFarma Perto</title>
+    <style>
+        :root {
+            --primary-blue: #0066cc;
+            --primary-green: #93BD57;
+            --light-blue: #e6f2ff;
+            --light-green: #e6f7f0;
+            --white: #ffffff;
+            --dark-gray: #0d3f51;
+            --medium-gray: #666666;
+            --light-gray: #f5f5f5;
+            --accent-red: #e63946;
+            --accent-yellow: #ee7629;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --radius: 10px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--white);
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Fixed Menu - Responsivo */
+        .fixed-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .menu-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .menu-logo {
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-logo span {
+            color: var(--primary-green);
+        }
+
+        .menu-nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        .menu-link {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            font-size: 15px;
+            padding: 8px 0;
+            position: relative;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .menu-link:hover {
+            color: var(--primary-blue);
+        }
+
+        .menu-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-blue);
+            transition: var(--transition);
+        }
+
+        .menu-link:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--dark-gray);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-btn {
+            padding: 10px 24px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-btn:hover {
+            background: #0052a3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.2);
+        }
+
+        .menu-btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .menu-btn-outline:hover {
+            background: rgba(0, 102, 204, 0.05);
+        }
+
+        /* Info Panel - Z-index aumentado */
+        .info-panel {
+            position: fixed;
+            top: 70px;
+            right: 40px;
+            width: 450px;
+            max-height: 80vh;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            z-index: 2000; /* Aumentado para ficar acima de tudo */
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
+            transition: all 0.4s ease;
+        }
+
+        .info-panel.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .panel-header {
+            padding: 25px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-green) 100%);
+            color: white;
+            position: relative;
+        }
+
+        .panel-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .panel-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .panel-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .panel-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .panel-content {
+            padding: 0;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            padding: 25px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .panel-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary-blue);
+        }
+
+        .section-content {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bullet-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .bullet-list li:before {
+            content: '•';
+            color: var(--primary-green);
+            font-size: 18px;
+            position: absolute;
+            left: 0;
+            top: 8px;
+        }
+
+        .highlight-box {
+            background: var(--light-blue);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .highlight-box h4 {
+            font-size: 15px;
+            margin-bottom: 10px;
+            color: var(--dark-gray);
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .column-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .column-item h5 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--primary-blue);
+        }
+
+        /* Location Indicator */
+        .location-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: var(--radius);
+            border: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        .location-text {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+
+        .location-loading {
+            color: var(--primary-blue);
+        }
+
+        /* Map Container */
+        .map-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 3000;
+            padding: 80px 20px 20px;
+        }
+
+        .map-container.active {
+            display: block;
+        }
+
+        .map-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 3001;
+        }
+
+        .map-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .close-map {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--dark-gray);
+            cursor: pointer;
+        }
+
+        #googleMap, #staticMap {
+            width: 100%;
+            height: calc(100vh - 120px);
+            border-radius: var(--radius);
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .map-placeholder {
+            text-align: center;
+            color: var(--medium-gray);
+        }
+
+        .map-placeholder i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        /* Main Content */
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .header {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            min-height: 100vh;
+            position: relative;
+            padding-top: 70px;
+        }
+
+        .visual-side {
+            position: relative;
+            background-image: url('./retrato-de-uma-farmaceutica-trabalhando-na-farmacia.jpg');
+            background-position: center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px;
+        }
+
+        .visual-side::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.85) 0%, rgba(147, 189, 87, 0.7) 100%);
+            z-index: 1;
+        }
+
+        .logo-area {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .logo-area img {
+            width: 60px;
+            height: auto;
+        }
+
+        .logo-text {
+            color: var(--white);
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: #e6f7f0;
+            font-weight: 600;
+        }
+
+        .tagline {
+            position: relative;
+            z-index: 2;
+            color: var(--white);
+            font-size: 40px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .visual-footer {
+            position: relative;
+            z-index: 2;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .form-side {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 60px;
+            background-color: var(--white);
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .form-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .form-subtitle {
+            font-size: 16px;
+            color: var(--medium-gray);
+            margin-bottom: 40px;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark-gray);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-control {
+            padding: 16px 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--radius);
+            font-size: 16px;
+            transition: var(--transition);
+            background-color: #fafafa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background-color: var(--white);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .priority-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .priority-option {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .priority-option input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid #e0e0e0;
+            transition: var(--transition);
+            background-color: #fafafa;
+        }
+
+        .priority-option input:checked + .priority-badge {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border-color: var(--primary-blue);
+        }
+
+        .priority-badge.urgent {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .priority-badge.chronic {
+            border-color: var(--accent-yellow);
+            color: var(--accent-yellow);
+        }
+
+        .priority-option input:checked + .priority-badge.urgent {
+            background-color: var(--accent-red);
+            color: var(--white);
+        }
+
+        .priority-option input:checked + .priority-badge.chronic {
+            background-color: var(--accent-yellow);
+            color: var(--white);
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: none;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #0052a3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(0, 102, 204, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid #eee;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            height: 70px;
+            width: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 102, 204, 0.1);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-gray);
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .header {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            
+            .visual-side {
+                padding: 30px;
+                min-height: 400px;
+            }
+            
+            .tagline {
+                font-size: 32px;
+            }
+            
+            .form-side {
+                padding: 60px 40px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .info-panel {
+                right: 20px;
+                width: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            .fixed-menu {
+                padding: 15px 20px;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .menu-nav {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+                z-index: 999;
+            }
+            
+            .menu-nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .menu-right {
+                display: none; /* Hide buttons on mobile */
+            }
+            
+            .search-form {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .form-side {
+                padding: 40px 20px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .priority-options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .logo-area {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .tagline {
+                font-size: 28px;
+            }
+            
+            .info-panel {
+                width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+                max-height: 70vh;
+                top: 80px;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-left {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-logo span {
+                display: none;
+            }
+            
+            .form-title {
+                font-size: 24px;
+            }
+            
+            .tagline {
+                font-size: 24px;
+            }
+            
+            .info-panel {
+                width: calc(100% - 20px);
+                right: 10px;
+                left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Menu -->
+    <nav class="fixed-menu">
+        <div class="menu-left">
+            <div class="menu-logo">
+                <i class="fas fa-clinic-medical"></i>
+                Kutulika<span>FARMA PERTO</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="menu-nav" id="menuNav">
+                <a class="menu-link" data-panel="problem">Problema</a>
+                <a class="menu-link" data-panel="audience">Público-Alvo</a>
+                <a class="menu-link" data-panel="value">Proposta de Valor</a>
+                <a class="menu-link" data-panel="features">Funcionalidades</a>
+                <a class="menu-link" data-panel="flows">Fluxos</a>
+            </div>
+        </div>
+        <div class="menu-right">
+            <button class="menu-btn-outline menu-btn" id="pharmacyBtn">
+                <i class="fas fa-user-md"></i> Farmácia
+            </button>
+            <button class="menu-btn" id="downloadBtn">
+                <i class="fas fa-mobile-alt"></i> Baixar App
+            </button>
+        </div>
+    </nav>
+
+    <!-- Information Panels -->
+    <div class="info-panel" id="problem-panel">
+        <div class="panel-header">
+            <h3>Problema a Resolver</h3>
+            <p>Desafios no acesso a medicamentos em Angola</p>
+            <button class="panel-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="panel-content">
+            <div class="panel-section">
+                <div class="section-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Principais Desafios
+                </div>
+                <div class="section-content">
+                    <ul class="bullet-list">
+                        <li>Falta de informação sobre stock real das farmácias</li>
+                        <li>Perda de tempo e custos elevados com deslocações desnecessárias</li>
+                        <li>Dificuldade acrescida para idosos e doentes crónicos</li>
+                        <li>Ausência de uma plataforma centralizada e confiável</li>
+                        <li>Desperdício de recursos em busca de medicamentos indisponíveis</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <h4>Impacto Social</h4>
+                        <p>Milhares de angolanos enfrentam dificuldades diárias para encontrar medicamentos, sobretudo em situações de urgência ou doenças crónicas, agravando condições de saúde e aumentando custos familiares.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-panel" id="audience-panel">
+        <div class="panel-header">
+            <h3>Público-Alvo</h3>
+            <p>Quem beneficia da nossa solução</p>
+            <button class="panel-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="panel-content">
+            <div class="panel-section">
+                <div class="section-title">
+                    <i class="fas fa-users"></i>
+                    Utilizadores Finais
+                </div>
+                <div class="section-content">
+                    <div class="two-column">
+                        <div class="column-item">
+                            <h5><i class="fas fa-first-aid"></i> Pessoas em urgência</h5>
+                            <p>Precisam de medicamentos rapidamente para situações emergenciais</p>
+                        </div>
+                        <div class="column-item">
+                            <h5><i class="fas fa-heartbeat"></i> Doentes crónicos</h5>
+                            <p>Necessitam de medicamentos regulares para condições permanentes</p>
+                        </div>
+                        <div class="column-item">
+                            <h5><i class="fas fa-hands-helping"></i> Familiares/Cuidadores</h5>
+                            <p>Buscam medicamentos para familiares ou pessoas sob seus cuidados</p>
+                        </div>
+                        <div class="column-item">
+                            <h5><i class="fas fa-mobile-alt"></i> População urbana</h5>
+                            <p>Com acesso à internet móvel, principalmente em Luanda e grandes cidades</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-section">
+                <div class="section-title">
+                    <i class="fas fa-clinic-medical"></i>
+                    Farmácias Parceiras
+                </div>
+                <div class="section-content">
+                    <ul class="bullet-list">
+                        <li>Farmácias privadas independentes</li>
+                        <li>Farmácias de bairro e comunitárias</li>
+                        <li>Cadeias pequenas e médias de farmácias</li>
+                        <li>Farmácias hospitalares</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Containers -->
+    <div class="map-container" id="googleMapContainer">
+        <div class="map-header">
+            <div class="map-title">
+                <i class="fas fa-map-marked-alt"></i> Farmácias Próximas (Google Maps)
+            </div>
+            <button class="close-map" id="closeGoogleMap">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="googleMap">
+            <div class="map-placeholder">
+                <i class="fas fa-map-marked-alt"></i>
+                <h3>Carregando Mapa Google...</h3>
+                <p>A carregar farmácias próximas da sua localização</p>
+                <div class="location-indicator">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span class="location-text">A obter sua localização...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-container" id="staticMapContainer">
+        <div class="map-header">
+            <div class="map-title">
+                <i class="fas fa-map-marker-alt"></i> Farmácias Próximas (HTML5 Geolocation)
+            </div>
+            <button class="close-map" id="closeStaticMap">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="staticMap">
+            <div class="map-placeholder">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Localização Detectada</h3>
+                <p id="staticLocationInfo">A obter sua localização...</p>
+                <div id="pharmaciesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="header">
+        <div class="visual-side">
+            <div>
+                <div class="logo-area">
+                    <img src="logo3.svg" alt="KutulikaFARMA PERTO Logo">
+                    <div class="logo-text">KUTULIKA - <span>farma</span> PERTO</div>
+                </div>
+                
+                <h1 class="tagline">Medicamentos perto de si, quando mais precisa.</h1>
+            </div>
+            
+            <div class="visual-footer">
+                Encontre farmácias com os medicamentos que precisa em Luanda e em toda Angola
+            </div>
+        </div>
+        
+        <div class="form-side">
+            <div class="form-container">
+                <h2 class="form-title">Encontrar Medicamentos</h2>
+                <p class="form-subtitle">Localize farmácias próximas com os medicamentos disponíveis.</p>
+                
+                <!-- Location Indicator -->
+                <div class="location-indicator" id="locationIndicator">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="location-text">Localização: Aguardando permissão...</span>
+                </div>
+                
+                <form class="search-form">
+                    <div class="form-group full-width">
+                        <label class="form-label" for="medicineName">
+                            <i class="fas fa-capsules"></i> Medicamento
+                        </label>
+                        <input type="text" id="medicineName" class="form-control" placeholder="Ex: Paracetamol, Amoxicilina, Ibuprofeno...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="radius">
+                            <i class="fas fa-ruler"></i> Distância Máxima
+                        </label>
+                        <select id="radius" class="form-control">
+                            <option value="1">Até 1 km</option>
+                            <option value="3">Até 3 km</option>
+                            <option value="5" selected>Até 5 km</option>
+                            <option value="10">Até 10 km</option>
+                            <option value="20">Até 20 km</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            <i class="fas fa-exclamation-triangle"></i> Prioridade
+                        </label>
+                        <div class="priority-options">
+                            <label class="priority-option">
+                                <input type="radio" name="priority" value="normal" checked>
+                                <span class="priority-badge">Normal</span>
+                            </label>
+                            <label class="priority-option">
+                                <input type="radio" name="priority" value="urgent">
+                                <span class="priority-badge urgent">URGENTE</span>
+                            </label>
+                            <label class="priority-option">
+                                <input type="radio" name="priority" value="chronic">
+                                <span class="priority-badge chronic">Doença Crónica</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="btn-container">
+                    <button class="btn btn-primary" id="searchButton">
+                        <i class="fas fa-search"></i> Buscar Medicamento
+                    </button>
+                    <button class="btn btn-outline" id="uploadPrescription">
+                        <i class="fas fa-file-prescription"></i> Enviar Receita
+                    </button>
+                </div>
+                
+                <div class="features">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Localização Automática</h3>
+                        <p class="feature-desc">Usamos sua localização GPS para encontrar as farmácias mais próximas de si.</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="feature-title">Resultados Rápidos</h3>
+                        <p class="feature-desc">Obtenha informações em tempo real sobre disponibilidade de medicamentos.</p>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Seguro e Confiável</h3>
+                        <p class="feature-desc">Dados verificados de farmácias licenciadas em Angola.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables for location
+        let userLocation = null;
+        const GOOGLE_MAPS_API_KEY = 'AIzaSyAlk6zhL-VjbGA6FuTRf250gKeEgXMMiMY'; // Substitua com sua chave
+
+        // Menu Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const menuNav = document.getElementById('menuNav');
+            
+            menuToggle.addEventListener('click', function() {
+                menuNav.classList.toggle('active');
+                // Change icon
+                const icon = menuToggle.querySelector('i');
+                if (menuNav.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Close mobile menu when clicking a link
+            const menuLinks = document.querySelectorAll('.menu-link');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    menuNav.classList.remove('active');
+                    menuToggle.querySelector('i').classList.remove('fa-times');
+                    menuToggle.querySelector('i').classList.add('fa-bars');
+                });
+            });
+            
+            // Info Panels
+            const panels = document.querySelectorAll('.info-panel');
+            const closeButtons = document.querySelectorAll('.panel-close');
+            
+            // Open specific panel
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const panelId = this.getAttribute('data-panel');
+                    
+                    // Close all panels first
+                    panels.forEach(panel => {
+                        panel.classList.remove('active');
+                    });
+                    
+                    // Open selected panel
+                    const targetPanel = document.getElementById(`${panelId}-panel`);
+                    if (targetPanel) {
+                        targetPanel.classList.add('active');
+                    }
+                });
+            });
+            
+            // Close panels
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.info-panel').classList.remove('active');
+                });
+            });
+            
+            // Close panel when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.info-panel') && !e.target.closest('.menu-link')) {
+                    panels.forEach(panel => {
+                        panel.classList.remove('active');
+                    });
+                }
+            });
+            
+            // Close panel with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    panels.forEach(panel => {
+                        panel.classList.remove('active');
+                    });
+                }
+            });
+            
+            // Get user location on page load
+            getLocation();
+            
+            // Search Button - Now opens map with location
+            const searchButton = document.getElementById('searchButton');
+            const medicineInput = document.getElementById('medicineName');
+            const radiusSelect = document.getElementById('radius');
+            
+            searchButton.addEventListener('click', function() {
+                const medicine = medicineInput.value.trim();
+                const radius = radiusSelect.value;
+                const priority = document.querySelector('input[name="priority"]:checked').value;
+                
+                if (!medicine) {
+                    alert('Por favor, insira o nome do medicamento.');
+                    medicineInput.focus();
+                    return;
+                }
+                
+                if (!userLocation) {
+                    alert('Aguardando sua localização... Por favor, permita o acesso à localização.');
+                    getLocation();
+                    return;
+                }
+                
+                // Show loading
+                const originalText = searchButton.innerHTML;
+                searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Buscando...';
+                searchButton.disabled = true;
+                
+                // Simulate API call
+                setTimeout(() => {
+                    // Ask user which method to use
+                    const useGoogleMaps = confirm(`Buscar "${medicine}" em ${radius}km?\n\nClique em "OK" para usar Google Maps\nClique em "Cancelar" para usar Geolocation API`);
+                    
+                    if (useGoogleMaps) {
+                        showGoogleMap(medicine, radius, priority);
+                    } else {
+                        showStaticMap(medicine, radius, priority);
+                    }
+                    
+                    searchButton.innerHTML = originalText;
+                    searchButton.disabled = false;
+                }, 1000);
+            });
+            
+            // Upload Prescription
+            const uploadButton = document.getElementById('uploadPrescription');
+            uploadButton.addEventListener('click', function() {
+                alert('Funcionalidade de envio de receita será implementada em breve. Por enquanto, use a busca por nome do medicamento.');
+            });
+            
+            // Menu buttons
+            document.getElementById('pharmacyBtn').addEventListener('click', function() {
+                alert('Área para farmácias - Em breve poderá cadastrar sua farmácia aqui.');
+            });
+            
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                alert('App mobile kutulikaFARMA PERTO - Disponível em breve na Play Store e App Store.');
+            });
+            
+            // Map close buttons
+            document.getElementById('closeGoogleMap').addEventListener('click', function() {
+                document.getElementById('googleMapContainer').classList.remove('active');
+            });
+            
+            document.getElementById('closeStaticMap').addEventListener('click', function() {
+                document.getElementById('staticMapContainer').classList.remove('active');
+            });
+            
+            // Menu scroll effect
+            window.addEventListener('scroll', function() {
+                const menu = document.querySelector('.fixed-menu');
+                if (window.scrollY > 50) {
+                    menu.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+                    menu.style.padding = '12px 40px';
+                } else {
+                    menu.style.boxShadow = 'none';
+                    menu.style.padding = '15px 40px';
+                }
+            });
+        });
+        
+        // Geolocation Functions
+        function getLocation() {
+            const locationIndicator = document.getElementById('locationIndicator');
+            const locationText = locationIndicator.querySelector('.location-text');
+            
+            if (navigator.geolocation) {
+                locationText.innerHTML = '<i class="fas fa-spinner fa-spin location-loading"></i> Obtendo localização...';
+                
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        
+                        // Update location indicator
+                        locationIndicator.innerHTML = `
+                            <i class="fas fa-map-marker-alt" style="color: #0066cc;"></i>
+                            <span class="location-text">
+                                Localização: ${position.coords.latitude.toFixed(6)}, ${position.coords.longitude.toFixed(6)}
+                                <br><small>Pronto para buscar medicamentos</small>
+                            </span>
+                        `;
+                        
+                        console.log('Localização obtida:', userLocation);
+                    },
+                    function(error) {
+                        let errorMessage = 'Não foi possível obter sua localização.';
+                        
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMessage = 'Permissão de localização negada. Por favor, permita o acesso à localização.';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMessage = 'Informação de localização não disponível.';
+                                break;
+                            case error.TIMEOUT:
+                                errorMessage = 'Tempo esgotado ao obter localização.';
+                                break;
+                        }
+                        
+                        locationText.innerHTML = `<span style="color: #e63946;">${errorMessage}</span>`;
+                        console.error('Erro de geolocalização:', error);
+                        
+                        // Set default location (Luanda, Angola)
+                        userLocation = {
+                            lat: -8.839987,
+                            lng: 13.289437
+                        };
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                locationText.innerHTML = '<span style="color: #e63946;">Geolocalização não suportada pelo seu navegador.</span>';
+                // Set default location
+                userLocation = {
+                    lat: -8.839987,
+                    lng: 13.289437
+                };
+            }
+        }
+        
+        // Show Google Maps with pharmacies
+        function showGoogleMap(medicine, radius, priority) {
+            if (!userLocation) {
+                alert('Localização não disponível.');
+                return;
+            }
+            
+            // Show map container
+            const mapContainer = document.getElementById('googleMapContainer');
+            mapContainer.classList.add('active');
+            
+            // Initialize Google Maps
+            setTimeout(() => {
+                initGoogleMap(medicine, radius, priority);
+            }, 500);
+        }
+        
+        function initGoogleMap(medicine, radius, priority) {
+            const mapElement = document.getElementById('googleMap');
+            
+            // Check if Google Maps API is loaded
+            if (typeof google === 'undefined') {
+                mapElement.innerHTML = `
+                    <div class="map-placeholder">
+                        <i class="fas fa-exclamation-triangle" style="color: #e63946;"></i>
+                        <h3>Google Maps API não carregada</h3>
+                        <p>Para usar o Google Maps, você precisa:</p>
+                        <ol style="text-align: left; max-width: 400px; margin: 15px auto;">
+                            <li>Obter uma chave API do Google Maps</li>
+                            <li>Substituir "SUA_CHAVE_API_AQUI" no código</li>
+                            <li>Adicionar: &lt;script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlk6zhL-VjbGA6FuTRf250gKeEgXMMiMY&callback=initMap" async defer&gt;&lt;/script&gt;</li>
+                        </ol>
+                        <button onclick="showStaticMap('${medicine}', '${radius}', '${priority}')" style="margin-top: 20px; padding: 10px 20px; background: #0066cc; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Usar Geolocation API
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Create map centered on user location
+            const map = new google.maps.Map(mapElement, {
+                center: userLocation,
+                zoom: 14,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                styles: [
+                    {
+                        "featureType": "poi.medical",
+                        "elementType": "labels",
+                        "stylers": [{"visibility": "on"}]
+                    }
+                ]
+            });
+            
+            // Add user marker
+            new google.maps.Marker({
+                position: userLocation,
+                map: map,
+                title: "Sua Localização",
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                }
+            });
+            
+            // Add pharmacy markers (simulated data)
+            const pharmacies = generateMockPharmacies(userLocation, parseInt(radius));
+            
+            pharmacies.forEach(pharmacy => {
+                const marker = new google.maps.Marker({
+                    position: pharmacy.location,
+                    map: map,
+                    title: pharmacy.name,
+                    icon: {
+                        url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                    }
+                });
+                
+                // Info window
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="padding: 10px;">
+                            <h3 style="margin: 0 0 10px 0; color: #0066cc;">${pharmacy.name}</h3>
+                            <p style="margin: 0 0 5px 0;"><strong>Medicamento:</strong> ${medicine}</p>
+                            <p style="margin: 0 0 5px 0;"><strong>Preço:</strong> ${pharmacy.price}</p>
+                            <p style="margin: 0 0 5px 0;"><strong>Distância:</strong> ${pharmacy.distance} km</p>
+                            <p style="margin: 0 0 10px 0;"><strong>Status:</strong> <span style="color: green;">Disponível</span></p>
+                            <button onclick="contactPharmacy('${pharmacy.name}', '${medicine}', '${priority}')" style="background: #0066cc; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">
+                                <i class="fas fa-whatsapp"></i> Contactar via WhatsApp
+                            </button>
+                        </div>
+                    `
+                });
+                
+                marker.addListener('click', () => {
+                    infoWindow.open(map, marker);
+                });
+            });
+            
+            // Add circle for search radius
+            new google.maps.Circle({
+                strokeColor: '#0066cc',
+                strokeOpacity: 0.3,
+                strokeWeight: 2,
+                fillColor: '#0066cc',
+                fillOpacity: 0.1,
+                map: map,
+                center: userLocation,
+                radius: parseInt(radius) * 1000 // Convert km to meters
+            });
+        }
+        
+        // Show static map with HTML5 Geolocation
+        function showStaticMap(medicine, radius, priority) {
+            if (!userLocation) {
+                alert('Localização não disponível.');
+                return;
+            }
+            
+            // Show map container
+            const mapContainer = document.getElementById('staticMapContainer');
+            mapContainer.classList.add('active');
+            
+            // Update location info
+            const staticLocationInfo = document.getElementById('staticLocationInfo');
+            const pharmaciesList = document.getElementById('pharmaciesList');
+            
+            staticLocationInfo.innerHTML = `
+                <strong>Sua Localização:</strong><br>
+                Latitude: ${userLocation.lat.toFixed(6)}<br>
+                Longitude: ${userLocation.lng.toFixed(6)}<br>
+                <strong>Buscando:</strong> ${medicine} (Raio: ${radius} km)
+            `;
+            
+            // Generate mock pharmacies
+            const pharmacies = generateMockPharmacies(userLocation, parseInt(radius));
+            
+            // Display pharmacies
+            pharmaciesList.innerHTML = `
+                <h4 style="margin: 20px 0 10px 0; color: #0d3f51;">Farmácias Encontradas (${pharmacies.length})</h4>
+                <div style="max-height: 300px; overflow-y: auto;">
+                    ${pharmacies.map(pharmacy => `
+                        <div style="background: #f8f9fa; padding: 15px; margin-bottom: 10px; border-radius: 8px; border-left: 4px solid #93BD57;">
+                            <h5 style="margin: 0 0 5px 0; color: #0066cc;">${pharmacy.name}</h5>
+                            <p style="margin: 0 0 5px 0; font-size: 14px;"><i class="fas fa-map-marker-alt"></i> ${pharmacy.address}</p>
+                            <p style="margin: 0 0 5px 0; font-size: 14px;"><i class="fas fa-road"></i> Distância: ${pharmacy.distance} km</p>
+                            <p style="margin: 0 0 5px 0; font-size: 14px;"><i class="fas fa-pills"></i> ${medicine}: <strong>${pharmacy.price}</strong></p>
+                            <p style="margin: 0 0 10px 0; font-size: 14px;"><i class="fas fa-check-circle" style="color: green;"></i> Disponível</p>
+                            <button onclick="contactPharmacy('${pharmacy.name}', '${medicine}', '${priority}')" style="background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; width: 100%;">
+                                <i class="fab fa-whatsapp"></i> Contactar ${pharmacy.name} via WhatsApp
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+                <p style="margin-top: 20px; font-size: 12px; color: #666;">
+                    <i class="fas fa-info-circle"></i> Usando HTML5 Geolocation API. Farmácias simuladas para demonstração.
+                </p>
+            `;
+        }
+        
+        // Generate mock pharmacies near user location
+        function generateMockPharmacies(userLocation, radius) {
+            const pharmacyNames = [
+                "Farmácia São José", 
+                "Farmácia Popular", 
+                "Farmácia Central", 
+                "Farmácia Esperança",
+                "Farmácia Saúde Total",
+                "Farmácia Vida Nova",
+                "Farmácia Bom Pastor",
+                "Farmácia Santa Maria"
+            ];
+            
+            const addresses = [
+                "Rua da Saúde, 123 - Luanda",
+                "Av. 4 de Fevereiro, 456 - Luanda",
+                "Rua Amílcar Cabral, 789 - Luanda",
+                "Bairro Popular, 321 - Luanda",
+                "Maianga, 654 - Luanda",
+                "Ingombota, 987 - Luanda",
+                "Rua da Maianga, 147 - Luanda",
+                "Bairro Operário, 258 - Luanda"
+            ];
+            
+            const prices = ["1.500 Kz", "1.750 Kz", "1.200 Kz", "2.000 Kz", "1.350 Kz", "1.800 Kz", "1.600 Kz", "1.400 Kz"];
+            
+            const pharmacies = [];
+            
+            // Generate 3-6 random pharmacies
+            const numPharmacies = Math.floor(Math.random() * 4) + 3;
+            
+            for (let i = 0; i < numPharmacies; i++) {
+                // Generate random location within radius
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * radius * 0.8; // Within 80% of radius
+                
+                // Convert distance to lat/lng offset (approx 111km per degree)
+                const latOffset = (distance * Math.cos(angle)) / 111;
+                const lngOffset = (distance * Math.sin(angle)) / (111 * Math.cos(userLocation.lat * Math.PI / 180));
+                
+                pharmacies.push({
+                    name: pharmacyNames[i],
+                    address: addresses[i],
+                    location: {
+                        lat: userLocation.lat + latOffset,
+                        lng: userLocation.lng + lngOffset
+                    },
+                    distance: distance.toFixed(2),
+                    price: prices[i]
+                });
+            }
+            
+            // Sort by distance
+            return pharmacies.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
+        }
+        
+        // Contact pharmacy via WhatsApp
+        function contactPharmacy(pharmacyName, medicine, priority) {
+            const priorityText = priority === 'urgent' ? 'URGENTE' : (priority === 'chronic' ? 'Doença Crónica' : 'Normal');
+            const message = `Olá ${pharmacyName}! Gostaria de saber se têm ${medicine} disponível. Prioridade: ${priorityText}. Obrigado!`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/?text=${encodedMessage}`;
+            
+            // Open WhatsApp in new tab
+            window.open(whatsappURL, '_blank');
+            
+            // Close map if open
+            document.getElementById('googleMapContainer').classList.remove('active');
+            document.getElementById('staticMapContainer').classList.remove('active');
+        }
+    </script>
+    
+    <!-- Google Maps API Script (commented out - needs API key) -->
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlk6zhL-VjbGA6FuTRf250gKeEgXMMiMY&callback=initMap" async defer></script>
+    
+</body>
+</html>
