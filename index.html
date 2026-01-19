@@ -623,6 +623,14 @@
             flex: 1;
         }
 
+        .infos i{
+            z-index: 2;
+            color: #FFF;}
+
+        .infos p{
+            color:#000;
+        }
+
         .btn-primary {
             background-color: var(--primary-blue);
             color: var(--white);
@@ -832,7 +840,7 @@
         <div class="menu-left">
             <div class="menu-logo">
                 <i class="fas fa-clinic-medical"></i>
-                Kutulika<span>FARMA PERTO</span>
+                Kutulika
             </div>
             <button class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
@@ -985,13 +993,19 @@
     <!-- Main Content -->
     <div class="header">
         <div class="visual-side">
-            <div>
+            <div class="infos">
                 <div class="logo-area">
                     <img src="logo3.svg" alt="KutulikaFARMA PERTO Logo">
-                    <div class="logo-text">KUTULIKA - <span>farma</span> PERTO</div>
+                    <div class="logo-text">KUTULIKA</div>
                 </div>
                 
-                <h1 class="tagline">Medicamentos perto de si, quando mais precisa.</h1>
+                <h1 class="tagline">Conectando você a saúde! <br> </h1>
+           
+                <i class="fas fa-map-marker-alt"> </i> Encontre medicamentos em farmacias proximas <br>
+                <i class="fas fa-map-marker-alt"> </i> Compare preços e faça reserva de forma rápida e segura!
+                
+
+
             </div>
             
             <div class="visual-footer">
@@ -1002,7 +1016,7 @@
         <div class="form-side">
             <div class="form-container">
                 <h2 class="form-title">Encontrar Medicamentos</h2>
-                <p class="form-subtitle">Localize farmácias próximas com os medicamentos disponíveis.</p>
+                <p class="form-subtitle">Localize farmácias próximas com os medicamentos disponíveis em tempo real.</p>
                 
                 <!-- Location Indicator -->
                 <div class="location-indicator" id="locationIndicator">
